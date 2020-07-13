@@ -1,9 +1,13 @@
 #pragma once
 
-#define LEFT 1
-#define RIGHT 4
-#define UP 2
-#define DOWN 3
+constexpr int LEFT = 1;
+constexpr int RIGHT = 5;
+constexpr int UP = 2;
+constexpr int DOWN = 3;
+constexpr int COL = 1;
+constexpr int ROW = 2;
+constexpr int ALL = 0;
+
 #define REV(x) (5-x)
 
 #include <cstdlib>

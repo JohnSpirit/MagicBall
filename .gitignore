@@ -260,6 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 
-搞怪球.exe
+extra/
 *.vcxproj
 *.filters
