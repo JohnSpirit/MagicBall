@@ -6,8 +6,12 @@ public:
 	StaticStack(int length);
 	~StaticStack();
 
-	COORD Push();
+	bool Push(int x,int y);
+	bool Push(COORD c);
 	COORD Pop();
+	COORD operator[](int index)const;
+	COORD& operator[](int index);
+
 
 	int _maxlen = 0;
 	int _nowlen = -1;

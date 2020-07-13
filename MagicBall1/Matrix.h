@@ -1,11 +1,7 @@
 #pragma once
 //2020.6 Copyright@JSY-2020.
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <cstdlib>
 #include "MDUTD.h"
-using namespace std;
+
 
 template<typename T>
 class Vector;

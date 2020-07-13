@@ -12,13 +12,67 @@ StaticStack::~StaticStack()
 	delete[] this->_stackptr;
 }
 
-COORD StaticStack::Push()
+bool StaticStack::Push(int x, int y)
 {
+	if (this->_nowlen == this->_maxlen - 1)return false;
+	else
+	{
+		this->_nowlen++;
+		this->_stackptr[this->_nowlen].X = x;
+		this->_stackptr[this->_nowlen].Y = y;
+		return true;
+	}
+}
 
-	return COORD();
+bool StaticStack::Push(COORD c)
+{
+	if (this->_nowlen == this->_maxlen - 1)return false;
+	else
+	{
+		this->_nowlen++;
+		this->_stackptr[this->_nowlen] = c;
+		return true;
+	}
 }
 
 COORD StaticStack::Pop()
 {
-	return COORD();
+	if (this->_nowlen == -1)
+	{
+		COORD c{ -1,-1 };
+		return c;
+	}
+	else
+		return this->_stackptr[this->_nowlen--];
+}
+
+COORD StaticStack::operator[](int index) const
+{
+	if (index == -1 && this->_nowlen > -1)
+	{
+		return this->_stackptr[this->_nowlen];
+
+	}
+	if (index > -1 && index <= this->_nowlen)
+	{
+		return this->_stackptr[index];
+	}
+
+	COORD c{ -1,-1 };
+	return c;
+}
+
+COORD & StaticStack::operator[](int index)
+{
+	if (index == -1)
+	{
+		if (this->_nowlen > -1)return this->_stackptr[this->_nowlen];
+
+	}
+	if (index > -1 && index <= this->_nowlen)
+	{
+		return this->_stackptr[index];
+	}
+	cerr << "OutOfRangeError!!" << endl;
+	exit(EXIT_FAILURE);
 }

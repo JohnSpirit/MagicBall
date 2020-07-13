@@ -8,12 +8,19 @@ constexpr int COL = 1;
 constexpr int ROW = 2;
 constexpr int ALL = 0;
 
+constexpr int EASY = 4;
+constexpr int NORMAL = 5;
+constexpr int HARD = 6;
+
 #define REV(x) (5-x)
 
+#include <iostream>
+#include <fstream>
+#include <cmath>
 #include <cstdlib>
 #include <cstdio>
-#include <cmath>
 #include <easyx.h>
+#include <ctime>
 
 using namespace std;
 
