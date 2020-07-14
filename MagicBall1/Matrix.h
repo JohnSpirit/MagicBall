@@ -21,7 +21,7 @@ public:
 	
 	Matrix<T>& ReadFromFile(fstream& input,bool close=true);
 	void SaveToFile(fstream& output, bool close = true);
-	Matrix<T>& SetValueByArray(T* arrptr = nullptr, int RowOrCol = COL, int toset = 0);
+	Matrix<T>& SetValueByArray(T* arrptr = nullptr, int RowOrCol = ALL, int toset = 0);
 	Matrix<T>& Randomize();
 
 	void ReSize(int m, int n);

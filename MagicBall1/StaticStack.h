@@ -12,6 +12,7 @@ public:
 	StackNode operator[](int index)const;
 	StackNode& operator[](int index);
 	bool Has(const Coord& s);
+	void Reset();
 
 	int _maxlen = 0;
 	int _nowlen = -1;

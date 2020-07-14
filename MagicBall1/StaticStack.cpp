@@ -4,7 +4,6 @@
 StaticStack::StaticStack(int length):_maxlen(length)
 {
 	this->_stackptr = new StackNode[this->_maxlen];
-
 }
 
 StaticStack::~StaticStack()
@@ -28,55 +27,37 @@ bool StaticStack::Push(int x, int y, BALLTYPE bt)
 
 bool StaticStack::Push(Coord c, BALLTYPE bt)
 {
-	if (this->_nowlen == this->_maxlen - 1)return false;
-	else
-	{
-		this->_nowlen++;
-		this->_stackptr[this->_nowlen].cd = c;
-		this->_stackptr[this->_nowlen].bt = bt;
-		this->_stackptr[this->_nowlen].dir = LEFT;
-		return true;
-	}
+	return Push(c.X, c.Y, bt);
 }
 
 Coord StaticStack::Pop()
 {
-	if (this->_nowlen == -1)
-	{
-		Coord c(-1,-1);
-		return c;
-	}
-	else
-		return this->_stackptr[this->_nowlen--].cd;
+	return this->_nowlen == -1 ? Coord(-1, -1) : this->_stackptr[this->_nowlen--].cd;
 }
 
 StackNode StaticStack::operator[](int index) const
 {
-	if (index == -1 && this->_nowlen > -1)
-	{
-		return this->_stackptr[this->_nowlen];
-
-	}
-	if (index > -1 && index <= this->_nowlen)
-	{
-		return this->_stackptr[index];
-	}
-
-	StackNode s(-1,-1,-1,-1);
-	return s;
+	if (index <= -1 && this->_nowlen + index >= -1)return this->_stackptr[this->_nowlen + index + 1];
+	if (index > -1 && index <= this->_nowlen)return this->_stackptr[index];
+	return StackNode(-1,-1,-1,-1);
 }
 
 StackNode & StaticStack::operator[](int index)
 {
-	if (index == -1)
-	{
-		if (this->_nowlen > -1)return this->_stackptr[this->_nowlen];
-
-	}
-	if (index > -1 && index <= this->_nowlen)
-	{
-		return this->_stackptr[index];
-	}
+	if (index <= -1 && this->_nowlen + index >= -1)return this->_stackptr[this->_nowlen + index + 1];
+	if (index > -1 && index <= this->_nowlen)return this->_stackptr[index];
 	cerr << "OutOfRangeError!!" << endl;
 	exit(EXIT_FAILURE);
+}
+
+bool StaticStack::Has(const Coord & s)
+{
+	for (loop_control i = 0; i <= this->_nowlen; i++)
+		if (this->_stackptr[i].cd == s)return true;
+	return false;
+}
+
+void StaticStack::Reset()
+{
+	_nowlen = -1;
 }
