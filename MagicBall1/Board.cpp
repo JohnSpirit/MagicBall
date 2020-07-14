@@ -1,16 +1,16 @@
 #include "Board.h"
 
 
-Board::Board() :Matrix<BALLTYPE>()
+Board::Board() :Matrix<BALLTYPE>(), _pathstack(0)
 {
 
 }
 
-Board::Board(int x, int y) : Matrix<BALLTYPE>(x, y), _emptynum(x*y)
+Board::Board(int x, int y) : Matrix<BALLTYPE>(x, y), _emptynum(x*y), _pathstack(x*y)
 {
-	COORD* ptr = nullptr;
+	Coord* ptr = nullptr;
 	loop_control i, j;
-	ptr = this->_emptylist = new COORD[this->_emptynum];
+	ptr = this->_emptylist = new Coord[this->_emptynum];
 	for (i = 0; i < this->_m; i++)
 		for (j = 0; j < this->_n; j++)
 		{
@@ -20,11 +20,13 @@ Board::Board(int x, int y) : Matrix<BALLTYPE>(x, y), _emptynum(x*y)
 		}
 }
 
-Board::Board(const Matrix<BALLTYPE>& b)
+Board::Board(const Matrix<BALLTYPE>& b) :_pathstack(b.GetSize(0)*b.GetSize(1))
 {
+
 }
 
-Board::Board(const Board & b) : Matrix<BALLTYPE>(b), _score(b._score), _steps(b._steps), _emptynum(b._emptynum)
+Board::Board(const Board & b) :
+	Matrix<BALLTYPE>(b), _score(b._score), _steps(b._steps), _emptynum(b._emptynum), _pathstack(b.GetSize(0)*b.GetSize(1))
 {
 	for (loop_control i = 0; i < this->_emptynum; i++)
 		this->_emptylist[i] = b._emptylist[i];
@@ -45,7 +47,7 @@ Board& Board::operator=(const Board & b)
 	this->_steps = b._steps;
 	this->_score = b._score;
 	delete[] this->_emptylist;
-	this->_emptylist = new COORD[this->_emptynum];
+	this->_emptylist = new Coord[this->_emptynum];
 	for (i = 0; i < _emptynum; i++)
 		this->_emptylist[i] = b._emptylist[i];
 
@@ -55,11 +57,11 @@ Board& Board::operator=(const Board & b)
 void Board::Init()
 {
 	delete[] _emptylist;
-	COORD* ptr = nullptr;
+	Coord* ptr = nullptr;
 	loop_control i, j;
-	 _steps = _score = 0;
+	_steps = _score = 0;
 	_emptynum = this->_m*this->_n;
-	ptr = this->_emptylist = new COORD[_emptynum];
+	ptr = this->_emptylist = new Coord[_emptynum];
 	for (i = 0; i < this->_m; i++)
 		for (j = 0; j < this->_n; j++)
 		{
@@ -76,14 +78,15 @@ void Board::Init()
 
 bool Board::Move(int8 x1, int8 y1, int8 x2, int8 y2)
 {
-	return false;
+	if (this->_matptr[x2][y2])return false;
+	else return _getPath(x1, y1, x2, y2);
 }
 
 bool Board::AddBalls(bool animate)
 {
 	if (_emptynum == 0)return false;
 	int8 rand_num = random(_emptynum), i = 0;
-	COORD* c = _emptylist + rand_num;
+	Coord* c = _emptylist + rand_num;
 	this->_matptr[c->X][c->Y] = random(EASY) + 1;
 	_emptynum--;
 	for (i = rand_num + 1; i <= _emptynum; i++)
@@ -96,7 +99,58 @@ bool Board::GameOver()
 	return false;
 }
 
-bool Board::_getPath()
+bool Board::_getPath(int8 x1, int8 y1, int8 x2, int8 y2)
 {
-	return false;
+	DIR dir = 0;
+	StackNode dest(x2, y2, this->_matptr[x2][y2], -1);
+	this->_pathstack.Push(x1, y1, this->_matptr[x1][y1]);
+
+	while (true)
+	{
+		if (this->_pathstack[-1].dir < 5)
+		{
+			if (_sniff(this->_pathstack[-1].cd, this->_pathstack[-1].dir) ||
+				(this->_pathstack._nowlen == 0 ? false : this->_pathstack[-1].dir == REV(this->_pathstack[-2].dir)))
+				//如果该方向非空或该方向为来时方向，跳过。
+				this->_pathstack[-1].dir++;
+			else//为零，试探是否与目标坐标相邻
+			{
+				if (dir = this->_pathstack[-1].cd.adj(dest.cd))//相邻
+				{
+					this->_pathstack.Push(x2, y2, this->_matptr[x2][y2]);
+					this->_pathstack[-1].dir = dir;
+					break;
+				}
+				else//不相邻
+				{
+					//如果被嗅探坐标为已走过路径，则跳过。
+					if(this->_pathstack.Has(_sniff_coord(this->_pathstack[-1].cd, this->_pathstack[-1].dir)))this->_pathstack[-1].dir++;
+					else
+					{
+						this->_pathstack.Push(x2, y2, this->_matptr[x2][y2]);
+					}
+				}
+			}
+		}
+		else
+		{
+			this->_pathstack.Pop();
+		}
+		if (this->_pathstack._nowlen == -1)return false;
+	}
+
+	return true;
+}
+
+BALLTYPE Board::_sniff(Coord c, DIR dir)
+{
+	switch (dir)
+	{
+
+	}
+}
+
+Coord Board::_sniff_coord(Coord c, DIR dir)
+{
+	return Coord();
 }

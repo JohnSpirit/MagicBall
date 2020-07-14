@@ -6,15 +6,15 @@ public:
 	StaticStack(int length);
 	~StaticStack();
 
-	bool Push(int x,int y);
-	bool Push(COORD c);
-	COORD Pop();
-	COORD operator[](int index)const;
-	COORD& operator[](int index);
-
+	bool Push(int x,int y, BALLTYPE bt);
+	bool Push(Coord c, BALLTYPE bt);
+	Coord Pop();
+	StackNode operator[](int index)const;
+	StackNode& operator[](int index);
+	bool Has(const Coord& s);
 
 	int _maxlen = 0;
 	int _nowlen = -1;
-	COORD* _stackptr = nullptr;
+	StackNode* _stackptr = nullptr;
 };
 

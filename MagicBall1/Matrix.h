@@ -26,6 +26,7 @@ public:
 
 	void ReSize(int m, int n);
 	Vector<int> GetSize()const;
+	int GetSize(int xory = 0)const;
 	Matrix<T> Inv()const;
 	Matrix<T> Transpose()const;
 	virtual Matrix<T>& Concat(const Matrix<T> mat, int dir = RIGHT, bool inplace = true)final;//不能被重写
@@ -191,6 +192,12 @@ Vector<int> Matrix<T>::GetSize()const
 	v(0, 0) = this->_m;
 	v(0, 1) = this->_n;
 	return v;
+}
+
+template<typename T>
+inline int Matrix<T>::GetSize(int xory)const
+{
+	return xory ? this->_m : this->_n;
 }
 
 template<typename T>

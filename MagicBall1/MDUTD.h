@@ -34,8 +34,44 @@ typedef signed char loop_control;
 typedef signed char DIR;
 
 
-typedef struct
+class Coord
 {
+public:
+	Coord(int8 x, int8 y) :X(x), Y(y) {};
+	Coord() {};
+	int8 X;
+	int8 Y;
+	bool operator==(const Coord& s);
+	DIR adj(const Coord& s);
+};
+
+
+class StackNode 
+{
+public:
+	StackNode(int8 x1, int8 y1, BALLTYPE b, DIR d) :cd(x1, y1), bt(b), dir(d) {};
+	StackNode() {};
+	Coord cd;
 	BALLTYPE bt;
-	COORD cd;
-}BALL;
+	DIR dir;
+};
+
+bool Coord::operator==(const Coord& s)
+{
+	return (this->X == s.X) && (this->Y == s.Y);
+}
+
+DIR Coord::adj(const Coord & s)
+{
+	if (s.X == this->X)
+	{
+		if (s.Y == this->Y + 1)return UP;
+		else if (s.Y == this->Y - 1)return DOWN;
+	}
+	else if (s.Y == this->Y)
+	{
+		if (s.X == this->X + 1)return RIGHT;
+		else if (s.X == this->X - 1)return LEFT;
+	}
+	else return 0;
+}
