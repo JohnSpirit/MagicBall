@@ -137,34 +137,32 @@ bool Board::GameOver()
 bool Board::Check()
 {
 	loop_control i = 0, j = 0, end = 0, counter = 1;
-	BALLTYPE b = this->_matptr[_min_balls - 1][j];
+	BALLTYPE b = -1;
 	bool flag = false;
 	//y向
 	for (j = 0; j < this->_n; j++)//j=列数，i=行数
 	{
-		end = _min_balls - 1, counter = 1, i = 1, b = this->_matptr[0][j];
+		end = _m - 1, counter = 1, i = 0, b = this->_matptr[0][j];
 		while (true)
 		{
-			for (; i <= end; i++)
+			for (i++; i <= end; i++)
 			{
 				if (this->_matptr[i][j] == b)counter++;
 				else break;
 			}
-			if (counter == _min_balls && b)
+			if (counter >= _min_balls && b)
 			{
-				_balls_to_remove.bt = b;
+				_balls_to_remove.bt = counter;
 				_balls_to_remove.cd = Coord(i - 1, j);
 				_balls_to_remove.dir = UP;
 				flag = true;
 				break;
 			}
-			else if (i + 4 >= _m)break;
+			else if (i + 4 > end)break;
 			else
 			{
 				counter = 1;
 				b = this->_matptr[i][j];
-				end = i + 4;
-				i += 1;
 			}
 		}
 	}
@@ -172,29 +170,27 @@ bool Board::Check()
 	//x向
 	for (j = 0; j < this->_m; j++)//j=行数，i=列数
 	{
-		end = _min_balls - 1, counter = 1, i = 1, b = this->_matptr[j][0];
+		end = _n - 1, counter = 1, i = 0, b = this->_matptr[j][0];
 		while (true)
 		{
-			for (; i <= end; i++)
+			for (i++; i <= end; i++)
 			{
 				if (this->_matptr[j][i] == b)counter++;
 				else break;
 			}
-			if (counter == _min_balls && b)
+			if (counter >= _min_balls && b)
 			{
-				_balls_to_remove.bt = b;
+				_balls_to_remove.bt = counter;
 				_balls_to_remove.cd = Coord(j, i - 1);
 				_balls_to_remove.dir = LEFT;
 				flag = true;
 				break;
 			}
-			else if (i + 4 >= _n)break;
+			else if (i + 4 > end)break;
 			else
 			{
 				counter = 1;
 				b = this->_matptr[j][i];
-				end = i + 4;
-				i += 1;
 			}
 		}
 	}
@@ -213,7 +209,7 @@ bool Board::Check()
 			}
 			if (counter >= _min_balls && b)
 			{
-				_balls_to_remove.bt = b;
+				_balls_to_remove.bt = counter;
 				_balls_to_remove.cd = Coord(i - 1, j - i + 1);
 				_balls_to_remove.dir = RIGHTUP;
 				flag = true;
@@ -243,7 +239,7 @@ bool Board::Check()
 			}
 			if (counter >= _min_balls && b)
 			{
-				_balls_to_remove.bt = b;
+				_balls_to_remove.bt = counter;
 				_balls_to_remove.cd = Coord(i - 1, i - 1 - j);
 				_balls_to_remove.dir = LEFTUP;
 				flag = true;
@@ -262,7 +258,7 @@ bool Board::Check()
 	{
 		Coord c = _balls_to_remove.cd;
 		//cout << "row=" << int(c.X) << "\tcol=" << int(c.Y) << endl;
-		for (loop_control i = 0; i < 5; i++)
+		for (loop_control i = 0; i < _balls_to_remove.bt; i++)
 		{
 			switch (_balls_to_remove.dir)
 			{

@@ -155,6 +155,7 @@ bool Controller::_getCommand()
 			selected_ball_count = 0;
 			_drawBall(selected_balls[0].X, selected_balls[0].Y,
 				this->_board._getMatptr()[selected_balls[0].X][selected_balls[0].Y]);
+			selected_balls[0] = Coord(-10, -10), selected_balls[1] = Coord(-100, -100);
 		}
 		//cout << selected_ball_count << "\t";
 		while (GetMouseMsg().mkLButton)Sleep(1);
