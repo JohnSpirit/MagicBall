@@ -26,7 +26,7 @@ public:
 
 	void ReSize(int m, int n);
 	Vector<int> GetSize()const;
-	int GetSize(int xory = 0)const;
+	int GetSize(int xory)const;
 	Matrix<T> Inv()const;
 	Matrix<T> Transpose()const;
 	virtual Matrix<T>& Concat(const Matrix<T> mat, int dir = RIGHT, bool inplace = true)final;//不能被重写
