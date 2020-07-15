@@ -6,7 +6,7 @@ Board::Board() :Matrix<BALLTYPE>(), _pathstack(0)
 
 }
 
-Board::Board(int x, int y) : Matrix<BALLTYPE>(x, y), _emptynum(x*y), _pathstack(x*y)
+Board::Board(int x, int y, int mode) : Matrix<BALLTYPE>(x, y), _emptynum(x*y), _pathstack(x*y), _mode(mode)
 {
 	Coord* ptr = nullptr;
 	loop_control i, j;
@@ -39,7 +39,7 @@ Board::Board(const Matrix<BALLTYPE>& b) :Matrix<BALLTYPE>(b), _pathstack(b.GetSi
 }
 
 Board::Board(const Board & b) :
-	Matrix<BALLTYPE>(b), _score(b._score), _steps(b._steps), _emptynum(b._emptynum), _pathstack(b.GetSize(0)*b.GetSize(1))
+	Matrix<BALLTYPE>(b), _score(b._score), _steps(b._steps), _emptynum(b._emptynum), _pathstack(b.GetSize(0)*b.GetSize(1)), _mode(b._mode)
 {
 	for (loop_control i = 0; i < this->_emptynum; i++)
 		this->_emptylist[i] = b._emptylist[i];
@@ -59,6 +59,7 @@ Board& Board::operator=(const Board & b)
 	this->_emptynum = b._emptynum;
 	this->_steps = b._steps;
 	this->_score = b._score;
+	this->_mode = b._mode;
 	delete[] this->_emptylist;
 	this->_emptylist = new Coord[this->_emptynum];
 	for (i = 0; i < _emptynum; i++)
@@ -87,7 +88,6 @@ void Board::Init()
 	AddBalls();
 	AddBalls();
 }
-
 
 bool Board::Move(int8 x1, int8 y1, int8 x2, int8 y2)
 {
@@ -136,7 +136,7 @@ bool Board::GameOver()
 
 bool Board::Check()
 {
-	loop_control i = _min_balls - 1, j = 0, end = 0, counter = 1;
+	loop_control i = 0, j = 0, end = 0, counter = 1;
 	BALLTYPE b = this->_matptr[_min_balls - 1][j];
 	bool flag = false;
 	//yœÚ

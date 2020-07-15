@@ -3,8 +3,7 @@
 int Controller::Size = 50;
 int main(void)
 {
-	srand(time(0));
-	Controller c(9, 9);
+	Controller c(9, 9, HARD);
 	c.Play();
 
 	BALLTYPE b[] =
@@ -27,12 +26,10 @@ int main(void)
 	//	0,0,0,0,0,
 	//	0,0,0,0,0
 	//};
-	Matrix<BALLTYPE> m(9,9);
-	m.SetValueByArray(b,ALL);
+	Matrix<BALLTYPE> m(9, 9);
+	m.SetValueByArray(b, ALL);
 	cout << m.TypeCast<int>();
 	Board board(m);
-	//cout << board.Move(1, 4, 4, 0) << endl;
-	//cout << board._pathstack;
 	cout << board.Check();
 	system("pause");
 	return 0;

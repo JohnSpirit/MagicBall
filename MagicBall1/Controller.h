@@ -3,7 +3,7 @@
 class Controller
 {
 public:
-	Controller(int x, int y);
+	Controller(int x, int y, int mode);
 	~Controller();
 	void Play();
 	static int Size;
@@ -16,10 +16,9 @@ private:
 	void _selectBall(Coord c);
 	void _updateScore();
 	bool _getCommand();
-	
+
 	int _x = 9;
 	int _y = 9;
-	int _mode = NORMAL;
 	Board _board;
 };
 

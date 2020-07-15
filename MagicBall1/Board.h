@@ -1,12 +1,12 @@
 #pragma once
 #include "Matrix.h"
 #include "StaticStack.h"
-class Board:
+class Board :
 	public Matrix<BALLTYPE>
 {
 public:
 	Board();
-	Board(int x,int y);
+	Board(int x, int y, int mode);
 	Board(const Matrix<BALLTYPE>& b);
 	Board(const Board& b);
 	~Board();
@@ -28,9 +28,9 @@ public:
 	StackNode _balls_to_remove;
 private:
 	bool _getPath(int8 x1, int8 y1, int8 x2, int8 y2);
-	BALLTYPE _sniff(Coord c,DIR dir);
+	BALLTYPE _sniff(Coord c, DIR dir);
 	Coord _sniff_coord(Coord c, DIR dir);
 	int _min_balls = 5;
-	int _mode = NORMAL;
+	int _mode = HARD;
 };
 

@@ -1,9 +1,9 @@
 #include "Controller.h"
 
 
-Controller::Controller(int x, int y) :_x(x), _y(y), _board(x, y)
+Controller::Controller(int x, int y, int mode) :_x(x), _y(y), _board(x, y, mode)
 {
-
+	srand(time(0));
 }
 
 Controller::~Controller()
@@ -88,7 +88,7 @@ void Controller::_drawBall(int x, int y, BALLTYPE type)
 	case 4:setfillcolor(GREEN); break;
 	case 5:setfillcolor(CYAN); break;
 	case 6:setfillcolor(MAGENTA); break;
-	case 7:setfillcolor(LIGHTGRAY); break;
+	case 7:setfillcolor(RGB(255, 128, 0)); break;
 	}
 	solidcircle(x*Size + 0.5*Size, y*Size + 0.5*Size, 0.45*Size);
 }
@@ -117,7 +117,7 @@ void Controller::_updateScore()
 	sprintf(ssteps, "%d", this->_board._steps);
 	sprintf(sscore, "%d", this->_board._score);
 
-	setorigin((0.5+_y)*Size, 0.5*Size);
+	setorigin((0.5 + _y)*Size, 0.5*Size);
 	setbkmode(TRANSPARENT);
 	setbkcolor(RGB(150, 150, 150));
 	clearrectangle(0.5*Size, 0.5*Size, 2.5*Size + Size, Size + Size);
@@ -126,7 +126,7 @@ void Controller::_updateScore()
 	LOGFONT font;
 	gettextstyle(&font);
 	strcpy(font.lfFaceName, _T("ËÎÌו"));
-	font.lfHeight = 1*Size;
+	font.lfHeight = 1 * Size;
 	font.lfWidth = 0;
 	font.lfQuality = PROOF_QUALITY;
 	settextstyle(&font);
@@ -144,8 +144,8 @@ bool Controller::_getCommand()
 	while (selected_ball_count < 2)
 	{
 		while (!(m = GetMouseMsg()).mkLButton)Sleep(1);
-		selected_balls[selected_ball_count ? 0 : 1] = 
-			Coord(int8((m.x - 0.5*Size - (m.x - int(0.5*Size)) % Size) / Size), 
+		selected_balls[selected_ball_count ? 0 : 1] =
+			Coord(int8((m.x - 0.5*Size - (m.x - int(0.5*Size)) % Size) / Size),
 				int8((m.y - 0.5*Size - (m.y - int(0.5*Size)) % Size) / Size));
 		if (m.x >= (0.5 + _x)*Size || m.y >= (0.5 + _y)*Size)continue;
 		_selectBall(selected_balls[selected_ball_count ? 0 : 1].X, selected_balls[selected_ball_count ? 0 : 1].Y);
@@ -153,7 +153,7 @@ bool Controller::_getCommand()
 		if (selected_balls[0] == selected_balls[1])
 		{
 			selected_ball_count = 0;
-			_drawBall(selected_balls[0].X, selected_balls[0].Y, 
+			_drawBall(selected_balls[0].X, selected_balls[0].Y,
 				this->_board._getMatptr()[selected_balls[0].X][selected_balls[0].Y]);
 		}
 		//cout << selected_ball_count << "\t";
