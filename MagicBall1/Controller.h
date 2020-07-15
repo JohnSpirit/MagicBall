@@ -19,7 +19,7 @@ private:
 	
 	int _x = 9;
 	int _y = 9;
-	int _mode = EASY;
+	int _mode = NORMAL;
 	Board _board;
 };
 

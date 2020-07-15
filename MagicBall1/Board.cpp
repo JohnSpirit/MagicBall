@@ -117,12 +117,12 @@ bool Board::Move(const Coord & from, const Coord & to)
 	return Move(from.X, from.Y, to.X, to.Y);
 }
 
-bool Board::AddBalls(bool animate)
+bool Board::AddBalls()
 {
 	if (_emptynum == 0)return false;
 	int8 rand_num = random(_emptynum), i = 0;
 	Coord* c = _emptylist + rand_num;
-	this->_matptr[c->X][c->Y] = random(EASY) + 1;
+	this->_matptr[c->X][c->Y] = random(_mode) + 1;
 	_emptynum--;
 	for (i = rand_num + 1; i <= _emptynum; i++)
 		_emptylist[i - 1] = _emptylist[i];

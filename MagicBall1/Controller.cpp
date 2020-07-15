@@ -22,36 +22,29 @@ void Controller::Play()
 		{
 			if (this->_getCommand())
 			{
-				int fps = 300 / this->_board._pathstack._nowlen;
-				BALLTYPE b = this->_board._pathstack[0].bt;
-				for (loop_control i = 0; i < this->_board._pathstack._nowlen; i++)
-				{//animation
-					_drawBall(this->_board._pathstack[i].cd, 0);
-					_drawBall(this->_board._pathstack[i + 1].cd, b);
-					Sleep(fps);
-				}
-				if (this->_board.Check())
+				if (this->_board._pathstack._nowlen >= 0)
 				{
-					cout << "Check:\t" << "true" << endl;
-					this->_printBoard();
+					int fps = 300 / this->_board._pathstack._nowlen;
+					BALLTYPE b = this->_board._pathstack[0].bt;
+					for (loop_control i = 0; i < this->_board._pathstack._nowlen; i++)
+					{//animation
+						_drawBall(this->_board._pathstack[i].cd, 0);
+						_drawBall(this->_board._pathstack[i + 1].cd, b);
+						Sleep(fps);
+					}
 				}
-				else cout<< "Check:\t" << "false" << endl;
-
-				for (loop_control i = 0; i < 3; i++)
+				if (!this->_board.Check())
 				{
-					Sleep(50);
-					this->_board.AddBalls();
-					this->_printBoard();
-				}
-				if (this->_board.Check())
-				{
-					//cout << "Check:\t" << "true" << endl;
-					this->_printBoard();
+					for (loop_control i = 0; i < 3; i++)
+					{
+						Sleep(50);
+						this->_board.AddBalls();
+						this->_printBoard();
+					}
 				}
 			}
-			else this->_printBoard();
-
-			cout << "Score=\t" << this->_board._score << endl;
+			this->_board.Check();
+			this->_printBoard();
 		}
 	}
 }

@@ -16,7 +16,7 @@ public:
 	void Init();
 	bool Move(int8 x1, int8 y1, int8 x2, int8 y2);
 	bool Move(const Coord& from, const Coord& to);
-	bool AddBalls(bool animate=false);
+	bool AddBalls();
 	bool GameOver();
 	bool Check();
 
@@ -31,5 +31,6 @@ private:
 	BALLTYPE _sniff(Coord c,DIR dir);
 	Coord _sniff_coord(Coord c, DIR dir);
 	int _min_balls = 5;
+	int _mode = NORMAL;
 };
 
