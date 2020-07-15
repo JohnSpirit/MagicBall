@@ -7,6 +7,8 @@ constexpr int DOWN = 3;
 
 constexpr int LEFTUP = 5;
 constexpr int RIGHTUP = 6;
+constexpr int LEFTDOWN = 7;
+constexpr int RIGHTDOWN = 8;
 
 constexpr int COL = 1;
 constexpr int ROW = 2;
