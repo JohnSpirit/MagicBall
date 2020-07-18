@@ -268,8 +268,8 @@ bool Board::Check()
 			case RIGHTUP:	this->_matptr[c.X - i][c.Y + i] = 0; break;
 			}
 		}
-		this->_emptynum += 5;
-		this->_score += 5;
+		this->_emptynum += _balls_to_remove.bt;
+		this->_score += _balls_to_remove.bt;
 
 		loop_control i, j;
 		Coord* ptr = _emptylist;
