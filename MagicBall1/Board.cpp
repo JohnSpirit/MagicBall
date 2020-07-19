@@ -107,6 +107,7 @@ bool Board::Move(int8 x1, int8 y1, int8 x2, int8 y2)
 					ptr++;
 				}
 		_steps++;
+		cout << (*this).TypeCast<int>();
 		return true;
 	}
 	else return false;
@@ -291,6 +292,7 @@ bool Board::_getPath(int8 x1, int8 y1, int8 x2, int8 y2)
 	BALLTYPE sniff_num = -1;
 	Coord sniff_coord;
 	StackNode dest(x2, y2, 0, -1);
+	bool flag = true;
 	this->_pathstack.Reset();
 	this->_pathstack.Push(x1, y1, this->_matptr[x1][y1], LEFT);
 
@@ -307,14 +309,31 @@ bool Board::_getPath(int8 x1, int8 y1, int8 x2, int8 y2)
 				this->_pathstack.Push(x2, y2, 0, 0);
 				break;
 			}
-			else if (!this->_pathstack.Has(sniff_coord))this->_pathstack.Push(sniff_coord, sniff_num, 0);
+			else
+			{
+				this->_pathstack.Push(sniff_coord, sniff_num, 0);
+				this->_matptr[sniff_coord.X][sniff_coord.Y] = -1;//2020.7.18 23:45
+			}
 		}
-		else this->_pathstack.Pop();
+		else
+		{
+			if (this->_pathstack._nowlen > 0)this->_matptr[this->_pathstack[-1].cd.X][this->_pathstack[-1].cd.Y] = 0;
+			this->_pathstack.Pop();
+		}
 
-		if (this->_pathstack._nowlen == -1)return false;
+		if (this->_pathstack._nowlen == -1)
+		{
+			flag = false;
+			break;
+		}
 		else this->_pathstack[-1].dir++;
 	}
-	return true;
+
+	if (flag)
+		for (loop_control i = 1; i <= this->_pathstack._nowlen - 1; i++)//2020.7.18 23:47
+			this->_matptr[this->_pathstack[i].cd.X][this->_pathstack[i].cd.Y] = 0;
+
+	return flag;
 }
 
 BALLTYPE Board::_sniff(Coord c, DIR dir)

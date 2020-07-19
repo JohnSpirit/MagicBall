@@ -51,7 +51,7 @@ void Controller::Play()
 
 void Controller::_initBoard()
 {
-	initgraph(Size*(_x + 3 + 1.5), Size*(_y + 1));
+	initgraph(Size*(_x + 3 + 1.5), Size*(_y + 1),1);
 
 	setorigin(0, 0);
 	setbkmode(TRANSPARENT);
